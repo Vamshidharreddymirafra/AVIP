@@ -8,32 +8,35 @@
 //  Sequences are created and started in the test
 //--------------------------------------------------------------------------------------------
 class base_test extends uvm_test;
+
+   //factory registration
   `uvm_component_utils(base_test)
 
+   //virtual interface
     virtual spi_if vif;
-   //-------------------------------------------------------
-   // Declaring env config handle
-   //-------------------------------------------------------
+//-------------------------------------------------------
+// Declaring env config handle
+//-------------------------------------------------------
    env_config e_cfg_h;
 
-   //-------------------------------------------------------
-   // Declaring Agent Config Handles
-   //-------------------------------------------------------
+//-------------------------------------------------------
+// Declaring Agent Config Handles
+//-------------------------------------------------------
    slave_agent_config sa_cfg_h[];
 
-   //-------------------------------------------------------
-   // Assigning values
-   //-------------------------------------------------------
+//-------------------------------------------------------
+// Assigning values
+//-------------------------------------------------------
    int no_of_sagent = 1;
 
-   //-------------------------------------------------------
-   // Environment Handles
-   //-------------------------------------------------------
+//-------------------------------------------------------
+// Environment Handles
+//-------------------------------------------------------
    env env_h;
 
-  //-------------------------------------------------------
-  // Externally defined Tasks and Functions
-  //-------------------------------------------------------
+//-------------------------------------------------------
+// Externally defined Tasks and Functions
+//-------------------------------------------------------
   extern function new(string name = "base_test", uvm_component parent = null);
   extern virtual function void build_phase(uvm_phase phase);
   extern virtual function void end_of_elaboration_phase(uvm_phase phase);
@@ -60,10 +63,10 @@ endfunction : new
 //  phase - uvm phase
 //--------------------------------------------------------------------------------------------
 function void base_test::build_phase(uvm_phase phase);
-  super.build_phase(phase);
-  e_cfg_h = env_config::type_id::create("e_cfg_h");
-  e_cfg_h.sa_cfg_h = new[no_of_sagent];
-  env_h = env::type_id::create("env",this);
+   super.build_phase(phase);
+   e_cfg_h = env_config::type_id::create("e_cfg_h");
+   e_cfg_h.sa_cfg_h = new[no_of_sagent];
+   env_h = env::type_id::create("env",this);
 
   sa_cfg_h = new[no_of_sagent];
   foreach(sa_cfg_h[i]) begin
@@ -71,14 +74,16 @@ function void base_test::build_phase(uvm_phase phase);
     $display("Agent-%0d",i);
     if(!uvm_config_db #(virtual spi_if)::get(this,"","vif",vif)) begin
       `uvm_fatal("TEST","COULDNT GET")
-      e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
+       e_cfg_h.sa_cfg_h[i]=sa_cfg_h[i];
     end
   end
 
-  uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
+ uvm_config_db #(env_config)::set(this,"*","env_config",e_cfg_h);
 
 endfunction : build_phase
-
+//--------------------------------------------------------------------------------------------
+// Function:end_of_elabaration
+//--------------------------------------------------------------------------------------------
 function void base_test::end_of_elaboration_phase(uvm_phase phase);
   uvm_top.print_topology();
 endfunction : end_of_elaboration_phase
@@ -87,7 +92,6 @@ endfunction : end_of_elaboration_phase
 
 //--------------------------------------------------------------------------------------------
 //starting spi_fd_8b_test  
-//
 //--------------------------------------------------------------------------------------------
 
 `ifndef spi_fd_8b_test 
@@ -97,18 +101,20 @@ endfunction : end_of_elaboration_phase
 //class spi_fd_8b_test:
 //Descripition: creating spi_fd_8b_test by extending from base_test
 //and declaring handle for master and slave sequence
-//
 //--------------------------------------------------------------------------------------------
 
 class spi_fd_8b_test extends base_test;
-  
- `uvm_component_utils(spi_fd_8b_test)
-  m_spi_fd_8b_seq  m_spi_fd_8b;
-  s_spi_fd_8b_seq  s_spi_fd_8b;
 
-  //--------------------------------------------------------------------------------------------
-  // Externally defined tasks and functions
-  //--------------------------------------------------------------------------------------------
+  //factory registration
+ `uvm_component_utils(spi_fd_8b_test)
+
+ //handles for master and slave sequences
+   m_spi_fd_8b_seq  m_spi_fd_8b;
+   s_spi_fd_8b_seq  s_spi_fd_8b;
+
+//--------------------------------------------------------------------------------------------
+// Externally defined tasks and functions
+//--------------------------------------------------------------------------------------------
 
   extern function new(string name = "spi_fd_8b_test ", uvm_component parent); 
   extern function void build_phase(uvm_phase phase);
@@ -122,7 +128,6 @@ endclass:spi_fd_8b_test
 //Parameters:
 //name   - instance name of the spi_fd_8b_test:
 //parent - parent under which this component is created
-//
 //--------------------------------------------------------------------------------------------
 
  function spi_fd_8b_test::new(string name = "spi_fd_8b_test ", uvm_component parent);
@@ -156,8 +161,8 @@ task spi_fd_8b_test::run_phase(uvm_phase phase);
   s_spi_fd_8b=s_spi_fd_8b_seq::type_id::create("s_spi_fd_8b");
    phase.raise_objection(this);
    fork
-   m_spi_fd_8b.start(env_h.ma_h.m_sqr_h);
-   s_spi_fd_8b.start(env_h.sa_h.s_sqr_h);
+     m_spi_fd_8b.start(env_h.ma_h.m_sqr_h);
+     s_spi_fd_8b.start(env_h.sa_h.s_sqr_h);
    join  
    phase.drop_objection(this);
 endtask: run_phase

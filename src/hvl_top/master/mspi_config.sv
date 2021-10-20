@@ -23,7 +23,7 @@ endclass : configuration
 //  name - configuration
 //--------------------------------------------------------------------------------------------
  function configuration::new(string name = "configuration");
-  super.new(name);
+   super.new(name);
  endfunction : new
  
 `endif

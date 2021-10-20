@@ -53,14 +53,14 @@ function void master_tx::do_copy (uvm_object rhs);
   master_tx rhs_;
 
   if(!$cast(rhs_,rhs)) begin
-  `uvm_fatal("do_copy","cast of the rhs object failed")
+   `uvm_fatal("do_copy","cast of the rhs object failed")
   end
-  super.do_copy(rhs);
-  cs= rhs_.cs;
+    super.do_copy(rhs);
+    cs= rhs_.cs;
   foreach(master_out_slave_in[i])
-  master_out_slave_in[i]= rhs_.master_out_slave_in[i];
+    master_out_slave_in[i]= rhs_.master_out_slave_in[i];
   foreach(master_in_slave_out[i])
-  master_in_slave_out[i]= rhs_.master_in_slave_out[i];
+    master_in_slave_out[i]= rhs_.master_in_slave_out[i];
 endfunction:do_copy
 
 
@@ -71,13 +71,13 @@ function bit  master_tx::do_compare (uvm_object rhs,uvm_comparer comparer);
   master_tx rhs_;
 
   if(!$cast(rhs_,rhs)) begin
-  `uvm_fatal("do_compare","cast of the rhs object failed")
-  return 0;
+   `uvm_fatal("do_compare","cast of the rhs object failed")
+    return 0;
   end
 
-  return super.do_compare(rhs,comparer) &&
-  master_out_slave_in== rhs_.master_out_slave_in &&
-  master_in_slave_out== rhs_.master_in_slave_out;
+   return super.do_compare(rhs,comparer) &&
+   master_out_slave_in== rhs_.master_out_slave_in &&
+   master_in_slave_out== rhs_.master_in_slave_out;
 endfunction:do_compare
 
 
@@ -88,9 +88,9 @@ endfunction:do_compare
 function void master_tx::do_print(uvm_printer printer);
   super.do_print(printer);
        printer.print_field( "cs", cs , 2,UVM_DEC);
-       foreach(master_out_slave_in[i])
+     foreach(master_out_slave_in[i])
        printer.print_field($sformatf("master_out_slave_in[%0d]",i),this.master_out_slave_in[i],8,UVM_HEX);
-       foreach(master_in_slave_out[i])
+     foreach(master_in_slave_out[i])
        printer.print_field($sformatf("master_in_slave_out[%0d]",i),this.master_in_slave_out[i],8,UVM_HEX);
 endfunction:do_print
 

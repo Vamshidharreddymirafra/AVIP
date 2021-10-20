@@ -1,6 +1,6 @@
 `ifndef MASTER_AGENT_CONFIG_INCLUDED_
 `define MASTER_AGENT_CONFIG_INCLUDED_
-// TODO(mshariff): 
+
 //--------------------------------------------------------------------------------------------
 // Class: master_agent_config
 // Used as the configuration class for master agent and it's components
